@@ -1,18 +1,24 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-
+import { Accounts } from 'meteor/accounts-base';
 import ResolutionForm from './resolutionForm';
+import RegisterForm from './RegisterForm';
+import LoginForm from './LoginForm';
 
-const App = ({data}) => {
-  if (!data.loading){
+console.log(Accounts);
+const App = ({loading, refetch, resolutions}) => {
+
+  if (!loading){
 
     return (
       <div>
-        <h1>{data.hi}</h1>
-        <ResolutionForm refetch={data.refetch}></ResolutionForm>
+        <RegisterForm />
+        <LoginForm />
+        <ResolutionForm refetch={refetch}></ResolutionForm>
+        <button onClick={() => Meteor.logout()}>Logout</button>
         <ul>
-          {data.resolutions.map((res) => {
+          {resolutions.map((res) => {
             return (
               <li key={res._id}> {res.name}</li>
             )
@@ -27,8 +33,8 @@ const App = ({data}) => {
   }
   
 }
-const hiQuery = gql`
-  {
+const resolutionQuery = gql`
+  query Resolutions {
     hi
     resolutions {
       _id
@@ -38,5 +44,8 @@ const hiQuery = gql`
 `;
 
 export default graphql(
-  hiQuery
+  resolutionQuery ,
+  {
+    props: ({data}) => ({...data})
+  }
 )(App);

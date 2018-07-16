@@ -13,6 +13,7 @@ type Query {
 }
 `;
 
+
 const typeDefs = [
   testSchema,
   ResolutionsSchema

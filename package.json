@@ -2,12 +2,14 @@
   "name": "apollo",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "mongo1": "MONGO_URL=mongodb://matiaskochman:ferre1845@ds139251.mlab.com:39251/reactjs-meteor-graphql-example meteor run"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.51",
     "apollo-client": "^2.3.5",
     "apollo-client-preset": "^1.0.8",
+    "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "graphql": "^0.13.2",
