@@ -3,30 +3,22 @@ import { makeExecutableSchema } from 'graphql-tools';
 import _ from 'lodash';
 import ResolutionsSchema from '../../api/resolutions/resolution.graphql';
 import ResolutionsResolvers from '../../api/resolutions/resolvers';
+import UserSchema from '../../api/users/user.graphql';
+import UsersResolvers from '../../api/users/resolvers';
 
 //I had to add and save this comment to avoid an error
 
-const testSchema = `
-type Query {
-  hi: String
-  resolutions: [Resolution]
-}
-`;
-
+//123
 
 const typeDefs = [
-  testSchema,
-  ResolutionsSchema
+  ResolutionsSchema,
+  UserSchema
 ]
-const resolver = {
-  Query: {
-    hi() {
-      return "Hello Matias";
-    }
-  }
-};
 
-const resolvers = _.merge(resolver, ResolutionsResolvers);
+const resolvers = _.merge(
+  ResolutionsResolvers,
+  UsersResolvers
+);
 
 const schema = makeExecutableSchema({
   typeDefs,

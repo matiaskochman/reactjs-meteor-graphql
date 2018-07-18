@@ -7,19 +7,24 @@ import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 
 console.log(Accounts);
-const App = ({loading, refetch, resolutions, client}) => { //client es ApolloClient de withApollo(App)
+const App = ({loading, refetch, resolutions, client, user}) => { //client es ApolloClient de withApollo(App)
 
   if (!loading){
 
     return (
       <div>
-        <button onClick={() => {
-          Meteor.logout();
-          client.resetStore();
-          console.log('logout');
-        }}>Logout</button>
-        <RegisterForm client={client}/>
-        <LoginForm client={client}/>
+        {user._id ? (
+          <button onClick={() => {
+            Meteor.logout();
+            client.resetStore();
+            console.log('logout');
+          }}>Logout</button>
+        ) : (
+          <div>
+            <RegisterForm client={client}/>
+            <LoginForm client={client}/>
+          </div>
+        )}
         <ResolutionForm refetch={refetch}></ResolutionForm>
         <ul>
           {resolutions.map((res) => {
@@ -39,10 +44,11 @@ const App = ({loading, refetch, resolutions, client}) => { //client es ApolloCli
 }
 const resolutionQuery = gql`
   query Resolutions {
-    hi
-    resolutions {
-      _id
+    resolutions{
       name
+    }
+    user {
+      _id
     }
   }
 `;
