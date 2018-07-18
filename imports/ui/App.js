@@ -1,22 +1,26 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { graphql, withApollo } from 'react-apollo';
 import { Accounts } from 'meteor/accounts-base';
 import ResolutionForm from './resolutionForm';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 
 console.log(Accounts);
-const App = ({loading, refetch, resolutions}) => {
+const App = ({loading, refetch, resolutions, client}) => { //client es ApolloClient de withApollo(App)
 
   if (!loading){
 
     return (
       <div>
-        <RegisterForm />
-        <LoginForm />
+        <button onClick={() => {
+          Meteor.logout();
+          client.resetStore();
+          console.log('logout');
+        }}>Logout</button>
+        <RegisterForm client={client}/>
+        <LoginForm client={client}/>
         <ResolutionForm refetch={refetch}></ResolutionForm>
-        <button onClick={() => Meteor.logout()}>Logout</button>
         <ul>
           {resolutions.map((res) => {
             return (
@@ -48,4 +52,4 @@ export default graphql(
   {
     props: ({data}) => ({...data})
   }
-)(App);
+)(withApollo(App));

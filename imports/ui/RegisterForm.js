@@ -11,6 +11,7 @@ export default class RegisterForm extends Component {
   }
 
   registerUser = (e) => {
+    const { client } = this.props;
     e.preventDefault();
     Accounts.createUser(
       {
@@ -18,6 +19,9 @@ export default class RegisterForm extends Component {
         password: this.state.password
       },
       error => {
+        if(!error){
+          client.resetStore();
+        }
         console.log(error)
       }
     )

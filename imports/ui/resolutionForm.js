@@ -31,6 +31,8 @@ class ResolutionForm extends Component {
       //this.props.refetch();
     })
       .catch(e => console.error('data error'));
+    
+    this.setState({name:''});
   }
 
   render() {

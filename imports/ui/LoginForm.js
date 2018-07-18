@@ -17,7 +17,7 @@ export default class LoginForm extends Component {
     e.preventDefault();
     this.setState({password:e.target.value})
   }
-  
+
   login = (e) => {
     e.preventDefault();
     Meteor.loginWithPassword(
@@ -25,6 +25,9 @@ export default class LoginForm extends Component {
         this.state.password,
         error => {
           console.log(error)
+          if(!error){
+            this.props.client.resetStore();
+          }
         }
     )
   }
