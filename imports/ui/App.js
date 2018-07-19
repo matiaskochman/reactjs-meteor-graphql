@@ -65,6 +65,7 @@ const resolutionQuery = gql`
       goals{
         _id
         name
+        completed
       }
     }
     user {

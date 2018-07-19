@@ -1,7 +1,5 @@
 import goals from './goals';
 
-
-
 export default {
   Mutation: {
     createGoal(obj, args){
@@ -13,7 +11,15 @@ export default {
         completed: false
       });
       return goals.findOne(goalId)
+    },
+    toggleGoal(obj, args){
+      const goal = goals.findOne(args._id);
+      goals.update(args._id, {
+        $set: {
+          completed: !goal.completed
+        }
+      });
+      return goals.findOne(args._id);
     }
-
   }
 };
