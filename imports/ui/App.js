@@ -5,6 +5,8 @@ import { Accounts } from 'meteor/accounts-base';
 import ResolutionForm from './resolutionForm';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
+import GoalForm from './GoalForm';
+import Goal from './resolutions/Goal';
 
 console.log(Accounts);
 const App = ({loading, refetch, resolutions, client, user}) => { //client es ApolloClient de withApollo(App)
@@ -27,9 +29,22 @@ const App = ({loading, refetch, resolutions, client, user}) => { //client es Apo
         )}
         <ResolutionForm refetch={refetch}></ResolutionForm>
         <ul>
-          {resolutions.map((res) => {
-            return (
-              <li key={res._id}> {res.name}</li>
+        {resolutions.map((res) => {
+          return (
+            <li key={res._id}>
+            {res.name}
+            <ul>
+              {res.goals.length > 0 ? (res.goals.map((goal) => {
+                  console.log('goal: ', goal);
+                  return <Goal key={goal._id} goal={goal}/>
+                })): (
+                  <div></div>
+                )
+              }
+            </ul>
+                {console.log('res: ', res)}
+                <GoalForm resolutionId={res._id}/>
+              </li>
             )
           })}
         </ul>
@@ -44,8 +59,13 @@ const App = ({loading, refetch, resolutions, client, user}) => { //client es Apo
 }
 const resolutionQuery = gql`
   query Resolutions {
-    resolutions{
+    resolutions {
+      _id
       name
+      goals{
+        _id
+        name
+      }
     }
     user {
       _id
