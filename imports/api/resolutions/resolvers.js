@@ -23,11 +23,11 @@ export default {
     },
     completed: resolution => {
       const goalsList = goals.find({
-        resolutionId: resolution._id,
-        completed: false
+        resolutionId: resolution._id
       }).fetch();
-      console.log('goals size: ',goalsList.length);
-      return !goalsList.length //if length == 0 -> !0 == true else !number == false
+
+      const completedGoals = goalsList.filter(goal => goal.completed);
+      return goalsList.length > 0 && (goalsList.length === completedGoals.length) //if length == 0 -> !0 == true else !number == false
     }
   },
 
