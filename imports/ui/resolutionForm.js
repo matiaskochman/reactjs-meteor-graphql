@@ -16,7 +16,13 @@ class ResolutionForm extends Component {
   constructor(props){
     super(props);
     this.state = {
-      name:''
+      name:'',
+      error:''
+    }
+  }
+  componentWillUpdate(props){
+    if(this.state.error !== ''){
+      this.setState({error: ''})
     }
   }
   submitForm = (event) => {
@@ -30,7 +36,10 @@ class ResolutionForm extends Component {
       console.log('data ok')
       //this.props.refetch();
     })
-      .catch(e => console.error('data error'));
+      .catch(e => {
+        console.log(e);
+        this.setState({error: e.message})
+      });
     
     this.setState({name:''});
   }
@@ -38,6 +47,7 @@ class ResolutionForm extends Component {
   render() {
     return (
       <div>
+        {this.state.error && <p>{this.state.error}</p>}
         <input
           type="text"
           value={this.state.name}

@@ -21,7 +21,6 @@ class GoalForm extends Component {
   }
   submitForm = (event,resolutionId) => {
     event.preventDefault();
-    console.log('props: ', this.props);
     this.props.createGoal({
       variables: {
         name: this.state.name,

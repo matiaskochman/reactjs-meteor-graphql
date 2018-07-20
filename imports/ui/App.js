@@ -4,10 +4,9 @@ import { graphql, withApollo } from 'react-apollo';
 import { Accounts } from 'meteor/accounts-base';
 import propTypes from 'prop-types';
 import ResolutionForm from './resolutionForm';
-import RegisterForm from './RegisterForm';
-import LoginForm from './LoginForm';
 import GoalForm from './GoalForm';
 import Goal from './resolutions/Goal';
+import UserForm from './UserForm';
 
 console.log(Accounts);
 const App = ({loading, refetch, resolutions, client, user}) => { //client es ApolloClient de withApollo(App)
@@ -20,35 +19,26 @@ const App = ({loading, refetch, resolutions, client, user}) => { //client es Apo
 
     return (
       <div>
-        {user._id ? (
-          <button onClick={() => {
-            Meteor.logout();
-            client.resetStore();
-            console.log('logout');
-          }}>Logout</button>
-        ) : (
-          <div>
-            <RegisterForm client={client}/>
-            <LoginForm client={client}/>
-          </div>
-        )}
-        <ResolutionForm refetch={refetch}></ResolutionForm>
+        <UserForm
+          user={user}
+          client={client}
+        />
+        {user._id &&
+          (<ResolutionForm refetch={refetch}></ResolutionForm>)
+        }
         <ul>
-        {resolutions.map((res) => {
-          console.log('res:',res);
+        {user._id && resolutions.map((res) => {
           return (
             <li key={res._id}>
             <span style={{textDecoration: res.completed ? 'line-through' : 'none'}}>{res.name}</span>
             <ul>
               {res.goals.length > 0 ? (res.goals.map((goal) => {
-                  console.log('goal: ', goal);
                   return <Goal key={goal._id} goal={goal}/>
                 })): (
                   <div></div>
                 )
               }
             </ul>
-                {console.log('res: ', res)}
                 <GoalForm resolutionId={res._id}/>
               </li>
             )

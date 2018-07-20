@@ -5,14 +5,12 @@ import goals from '../goals/goals';
 export default {
   Query: {
     resolutions(obj, args, context){
-      console.log('context:', context);
       if(!context.userId){
         return [];
       }
       const res = resolutions.find({
         userId: context.userId
       }).fetch();
-      console.log('res: ',res)
       return res;
     }
   },
@@ -33,13 +31,16 @@ export default {
 
   Mutation: {
     createResolution(obj, args, context){
-      //console.log(obj,args,context);
+      if(context.userId){
 
-      const resolutionId = resolutions.insert({
-        name: args.name,
-        userId: context.userId
-      });
-      return resolutions.findOne(resolutionId);
+        const resolutionId = resolutions.insert({
+          name: args.name,
+          userId: context.userId
+        });
+        return resolutions.findOne(resolutionId);
+      } else {
+        throw new Error('Unauthorized');
+      }
     }
 
   }
