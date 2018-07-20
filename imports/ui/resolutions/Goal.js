@@ -27,8 +27,8 @@ class Goal extends Component {
     })
   }
   render(){
-    console.log('goalname: ',this.props.goal.name)
     const { goal } = this.props;
+
     return(
       <li>
         <input

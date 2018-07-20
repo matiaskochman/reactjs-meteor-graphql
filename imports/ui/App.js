@@ -2,6 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import { Accounts } from 'meteor/accounts-base';
+import propTypes from 'prop-types';
 import ResolutionForm from './resolutionForm';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
@@ -10,6 +11,10 @@ import Goal from './resolutions/Goal';
 
 console.log(Accounts);
 const App = ({loading, refetch, resolutions, client, user}) => { //client es ApolloClient de withApollo(App)
+
+  propTypes = {
+    resolutions: propTypes.array
+  }
 
   if (!loading){
 
@@ -30,9 +35,10 @@ const App = ({loading, refetch, resolutions, client, user}) => { //client es Apo
         <ResolutionForm refetch={refetch}></ResolutionForm>
         <ul>
         {resolutions.map((res) => {
+          console.log('res:',res);
           return (
             <li key={res._id}>
-            {res.name}
+            <span style={{textDecoration: res.completed ? 'line-through' : 'none'}}>{res.name}</span>
             <ul>
               {res.goals.length > 0 ? (res.goals.map((goal) => {
                   console.log('goal: ', goal);
@@ -62,6 +68,7 @@ const resolutionQuery = gql`
     resolutions {
       _id
       name
+      completed
       goals{
         _id
         name

@@ -20,6 +20,14 @@ export default {
   Resolution: {
     goals: (resolution) => {
       return goals.find({resolutionId: resolution._id}).fetch();
+    },
+    completed: resolution => {
+      const goalsList = goals.find({
+        resolutionId: resolution._id,
+        completed: false
+      }).fetch();
+      console.log('goals size: ',goalsList.length);
+      return !goalsList.length //if length == 0 -> !0 == true else !number == false
     }
   },
 
